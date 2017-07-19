@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ template "fullname" . }}
+type: Opaque
+data:
+  telegraf-token: {{ .Files.Get "telegraf-token" | b64enc }}

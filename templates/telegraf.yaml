@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-telegraf
+    spec:
+      containers:
+        - name: telegraf
+          image: ubuntu
+          command:
+            - sleep
+            - infinity
+          volumeMounts:
+            - name: {{ template "fullname" . }}-telegraf-conf
+              mountPath: /etc/telegraf/
+      volumes:
+      - name: {{ template "fullname" . }}-telegraf-conf
+        projected:
+          sources:
+          - configMap:
+              name: {{ .Release.Name }}-telegraf-conf
+              items:
+              - key: telegraf.conf
+                path: telegraf.conf
+              - key: a.conf
+                path: telegraf.d/a.conf
+              - key: b.conf
+                path: telegraf.d/b.conf
+          - secret:
+              name: {{ .Release.Name }}-telegraf-token

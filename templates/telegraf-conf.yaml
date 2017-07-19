@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}
+data:
+  telegrafConf: {{ .Files.Get "telegraf-conf" }}
+  wavemonConf: {{ .Files.Get "wavemon-conf" }}
+  prometheusConf: {{ .Files.Get "prometheus-conf" }}
